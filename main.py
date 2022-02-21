@@ -149,5 +149,5 @@ print("Выборочный коэффициент эксцесса теорет
 # Таблица сравнения относительных частот и теоретических вероятностей
 mod = [i for i in range(arr_size)]
 for i in range(arr_size):
-    mod[i] = math.fabs(w[i] - prob[i])
-    print("Разница w и prob j =", x[i], "w_j =", w[i], "p_j = ", prob[i], "|w_j - p_j| = ", mod[i])
+    mod[i] = round(math.fabs(w[i] - prob[i]), 5)
+    print("Разница w и prob j =", x[i], "w_j =", w[i], "p_j = ", round(prob[i], 5), "|w_j - p_j| = ", mod[i])
