@@ -122,7 +122,7 @@ for i in range(arr_size):
         break
 val = math.log(2) / math.log(q)
 if int(val) == float(val):
-    print("Выборочная медиана теоретическая", round(-val - 0.5, 6))
+    print("Выборочная медиана теоретическая", round(-val - 0.5))
 else:
     print("Выборочная медиана теоретическая", round(-val, 6))
 
