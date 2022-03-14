@@ -33,6 +33,7 @@ for i in range(len(unordered_selection)):
 # Значения интервального ряда(группированной выборки)
 # Число интервалов по формуле Стерджеса
 m = 1 + int(math.log2(200))
+#print(m)
 
 # Шаг
 step = ordered_selection[199] / m
@@ -41,10 +42,11 @@ step = ordered_selection[199] / m
 a = [i for i in range(m+1)]
 a[0] = 0
 for i in range(1, m+1):
-    a[i] = round(a[i - 1] + step, 5)
+    a[i] = a[i - 1] + step
 
 # n_i
 n = [0 for i in range(m)]
+j=1
 for i in range(m):
     for k in range(200):
         if a[i] < ordered_selection[k] <= a[i+1]:
@@ -57,7 +59,7 @@ for j in range(m):
 
 print("---------------Интервальный ряд (группированная выборка)---------------")
 for i in range(m):
-    print(i, ".", "Интервал", "[", a[i], ",", a[i+1], "]", "n_i =", n[i], "w_i =", w[i])
+    print(i, ".", "Интервал", "[", round(a[i], 5), ",", round(a[i+1], 5), "]", "n_i =", n[i], "w_i =", w[i])
 print("Сумма n_i", sum(n), "Сумма w_i", round(sum(w), 5))
 
 # Значения для ассоциированного статистического ряда
@@ -102,7 +104,7 @@ for i in range(m):
 a_ot = math.fabs(round(vs, 5) - round((1/_lambda), 5))
 print("Выборочное среднее экспериментальное", round(vs, 5))
 print("Выборочное среднее теоретическое", round((1/_lambda), 5))
-print("Абсолютное отклонение", a_ot)
+print("Абсолютное отклонение", round(a_ot, 5))
 print("Относительное отклонение", round((a_ot/round((1/_lambda), 5))*100, 5))
 print("------------------------------")
 
@@ -114,7 +116,7 @@ vd = vd - (h**2) / 12
 a_ot1 = math.fabs(round(vd, 5) - round(_lambda ** (-2), 5))
 print("Выборочная дисперсия эксперементальная", round(vd, 5))
 print("Выборочная дисперсия теоретическая", round(_lambda ** (-2), 5))
-print("Абсолютное отклонение", a_ot1)
+print("Абсолютное отклонение", round(a_ot1,5))
 print("Относительное отклонение", round((a_ot1/round(_lambda ** (-2), 5))*100, 5))
 print("------------------------------")
 
@@ -123,7 +125,7 @@ sigma = vd ** 0.5
 a_ot2 = math.fabs(round(sigma, 5) - round(1/_lambda, 5))
 print("Выборочное средне квадратическое отклонение эксперементальное", round(sigma, 5))
 print("Выборочное средне квадратическое отклонение теоретическое", round(1/_lambda, 5))
-print("Абсолютное отклонение", a_ot2)
+print("Абсолютное отклонение", round(a_ot2,5))
 print("Относительное отклонение", round((a_ot2/round(1/_lambda, 5))*100, 5))
 print("------------------------------")
 
@@ -147,7 +149,7 @@ for i in range(len(w)):
         print("Выборочная медиана эксперементальная", round(a[i+1], 5))
         print("Выборочная медиана теоретическая", round(math.log(2)/_lambda, 5))
         a_ot3 = math.fabs(round(a[i+1], 5) - round(math.log(2)/_lambda, 5))
-        print("Абсолютное отклонение", a_ot3)
+        print("Абсолютное отклонение", round(a_ot3,5))
         print("Относительное отклонение", round((a_ot3 / round(math.log(2)/_lambda, 5)) * 100, 5))
         print("------------------------------")
         break
@@ -156,7 +158,7 @@ for i in range(len(w)):
         print("Выборочная медиана эксперементальная", round(answer, 5))
         print("Выборочная медиана теоретическая", round(math.log(2)/_lambda, 5))
         a_ot3_1 = math.fabs(round(answer, 5) - round(math.log(2)/_lambda, 5))
-        print("Абсолютное отклонение", a_ot3_1)
+        print("Абсолютное отклонение", round(a_ot3_1, 5))
         print("Относительное отклонение", round((a_ot3_1 / round(math.log(2)/_lambda, 5)) * 100, 5))
         print("------------------------------")
         break
@@ -175,17 +177,17 @@ mu4_0 = mu4 - 4 * mu3 * mu1 + 6 * mu2 * (mu1 ** 2) - 3 * (mu1 ** 4)
 
 vka = mu3_0 / (sigma ** 3)
 vke = (mu4_0 / (sigma ** 4)) - 3
-a_ot4 = math.fabs(round(vka, 6) - 2)
+a_ot4 = math.fabs(round(vka, 5) - 2)
 print("Выборочный коэффициент асимметрии эксперементальный", round(vka, 5))
 print("Выборочный коэффициент асимметрии теоретический", 2)
-print("Абсолютное отклонение", a_ot4)
+print("Абсолютное отклонение", round(a_ot4, 5))
 print("Относительное отклонение", round((a_ot4 / 2) * 100, 5))
 print("------------------------------")
 
 a_ot5 = math.fabs(round(vke, 5) - 6)
 print("Выборочный коэффициент эксцесса эксперементальный", round(vke, 5))
 print("Выборочный коэффициент эксцесса теоретический", 6)
-print("Абсолютное отклонение", a_ot5)
+print("Абсолютное отклонение", round(a_ot5, 5))
 print("Относительное отклонение", round((a_ot5 / 6) * 100, 5))
 
 # Таблица сравнения относительных частот и теоретических вероятностей
@@ -199,5 +201,5 @@ for i in range(m):
     mod[i] = round(math.fabs(w[i] - prob[i]), 5)
     if mod[i] > delta:
         delta = mod[i]
-    print(i, ".", "Интервал", "[", a[i], ",", a[i+1], "]", "w_j =", w[i], "p_j = ", round(prob[i], 5), "|w_j - p_j| = ", mod[i])
+    print(i, ".", "Интервал", "[", round(a[i],5), ",", round(a[i+1],5), "]", "w_j =", w[i], "p_j = ", round(prob[i], 5), "|w_j - p_j| = ", mod[i])
 print("Сумма w_i", sum(w), "Сумма p_i", round(sum(prob), 5), "Макс дельта", delta)
