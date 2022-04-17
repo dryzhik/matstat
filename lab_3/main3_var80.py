@@ -154,4 +154,3 @@ ox.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
 plt.title("График")
 plt.grid()
 plt.show()
-
