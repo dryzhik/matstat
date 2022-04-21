@@ -34,6 +34,7 @@ unordered_selection = [1.35954, 0.47840, 0.46393, 0.11958, 0.83115, 2.60564, 2.1
 ordered_selection = np.sort(unordered_selection)
 print(ordered_selection)
 
+
 # Группированная выборка
 # Число интервалов по формуле Стерджеса
 m = 1 + int(math.log2(200))
@@ -72,7 +73,10 @@ for i in range(m):
 
 print("---------------Группированная выборка---------------")
 for i in range(m):
-    print(i, ".", "Интервал", "[", round(a[i], 5), ",", round(a[i+1], 5), "]", "x_i* =", x[i], "n_i =", n[i], "w_i =", w[i])
+    if(i == 0):
+        print(i + 1, ".", "Интервал", "[", round(a[i], 5), "      ,", round(a[i+1], 5), "]", f"x_{i+1}* =", x[i], f"n_{i+1} =", n[i], f"w_{i+1} =", w[i])
+    else:
+        print(i + 1, ".", "Интервал", "[", round(a[i], 5), ",", round(a[i+1], 5), "]", f"x_{i+1}* =", x[i], f"n_{i+1} =", n[i], f"w_{i+1} =", w[i])
 print("Сумма n_i", sum(n), "Сумма w_i", round(sum(w), 5))
 
 # Математическое ожидание
@@ -104,7 +108,7 @@ for i in range(m + 1):
 
 # p_k*
 p = [0 for i in range(m + 1)]
-p[m] = round(1 - bigF[m-1], 5)
+p[m] = round(1 - bigF[m - 1], 5)
 for i in range(m):
     if i == 0:
         p[i] = 0
@@ -118,14 +122,17 @@ print("---------------Таблица 2.2---------------")
 k = [i for i in range(m + 1)]
 
 for i in range(m + 1):
-    print("k = ", k[i], ";", "a_k = ", round(a[i], 5), ";", "f(a_k, _lambda) = ", f[i], ";", "F(a_k, _lambda) = ", bigF[i], ";", "p_k* = ", p[i])
+    if(i == 0):
+        print("k = ", k[i], ";", "0             ", ";", "f(0, _lambda) = ", f[i], ";","F(0, _lambda) =", "0", ";", "p_0* = ","-")
+    else:
+        print("k = ", k[i], ";", f"a_{i} = ", round(a[i], 5), ";", f"f(a_{i}, _lambda) = ", f[i], ";", f"F(a_{i}, _lambda) = ", bigF[i], ";", f"p_{i}* = ", p[i])
 print("Сумма p:", round(sum_p, 5))
 
 print("---------------Таблица 2.3---------------")
 
 shtuka = [0 for i in range(m)]
-for i in range(1, m):
-    shtuka[i] = (200 * ((w[i] - p[i]) ** 2)) / p[i]
+for i in range(m):
+    shtuka[i] = (200 * ((w[i] - p[i + 1]) ** 2)) / p[i + 1]
 sum_shtuka = 0
 for i in range(m):
     sum_shtuka += shtuka[i]
@@ -133,11 +140,23 @@ for i in range(m):
 mod = [0 for i in range(m)]
 delta = 0
 for i in range(m):
-    mod[i] = round(math.fabs(w[i] - p[i]), 5)
+    mod[i] = round(math.fabs(w[i] - p[i + 1]), 5)
     if mod[i] > delta:
         delta = mod[i]
-    print("k = ", k[i], "Интервал", "[", round(a[i], 5), ",", round(a[i+1], 5), "]", "w_k =", w[i], "p_k* = ", p[i], "|w_k-p_k|", mod[i], "shtuka", round(shtuka[i], 5))
-print("Сумма w_k", sum_w, "Сумма p_k", round(sum_p, 5), "Сумма shtuka_k", round(sum_shtuka, 5))
+    print("k = ", k[i] + 1, "Интервал", "[", round(a[i], 5), ",", round(a[i+1], 5), "]", f"w_{i+1} =", w[i], f"p_{i+1}* =", p[i + 1], f"|w_{i+1}-p_{i+1}|", mod[i], "shtuka =", round(shtuka[i], 5))
+print("Сумма w_k = ", sum_w, "Сумма p_k = ", round(sum_p, 5), "Сумма shuka_k (КРИТЕРИЙ ХИ^2_В) = ", round(sum_shtuka, 5))
+
+# Число степеней свободы
+l1 = m - 2
+print(f"Число степеней свободы l = {l1}")
+
+# Проверка гипотезы
+criteria = round(sum_shtuka, 5)
+
+if(criteria <= 12.6):
+    print(f"{criteria} <= 12,6 Гипотеза НЕ ПРОТИВОРЕЧИТ экспериментальным данным")
+else:
+    print(f"{criteria} > 12,6 Гипотеза ПРОТИВОРЕЧИТ экспериментальным данным")
 
 step = h
 # Гистограмма относительных частот
@@ -150,8 +169,7 @@ for i in range(m):
 for i in range(199):
     ox.plot([ordered_selection[i], ordered_selection[i+1]], [_lambda * math.exp(-_lambda * ordered_selection[i]), _lambda * math.exp(-_lambda * ordered_selection[i+1])], 'b')
 ox.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
-ox.xaxis.set_major_locator(ticker.MultipleLocator(0.2))
+ox.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
 plt.title("График")
 plt.grid()
 plt.show()
-
